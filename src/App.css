@@ -36,3 +36,47 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+
+/* 			self			*/
+
+
+.userImg{
+	height: 65px;
+    width: 65px;
+    border-radius: 45px;
+    border: 1px solid #cacaca;
+}
+
+.fs-3{
+	font-size:30px;
+}
+.cr{
+	color: #c7281cdb;
+}
+.cg{
+	color: #18791e;
+}
+a{
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
