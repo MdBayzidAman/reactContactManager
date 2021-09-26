@@ -16,7 +16,9 @@ function PeopleCard(props){
 				  <img src={userImg} className="userImg" alt="user Image" />
 				</div>
 				<div className="col-md-9">
-				  <NavLink to={`/contact/${id}`} >
+				
+				  <NavLink to={{pathname:`/contact/${id}`, state:{contact:props.data}}} >
+				  
 					<div className="card-body">
 						<h5 className="card-title"> {name}</h5>
 						<p className="card-text">Email: {props.email}</p>
@@ -24,7 +26,11 @@ function PeopleCard(props){
 				  </NavLink>
 				</div>
 				<div className="col-md-2 d-flex justify-content-evenly fs-3">
-					<i className="bi bi-pencil-square cg"></i>
+				
+					<NavLink to={{pathname:`edit/${id}`, state:{info: props.data}}} >
+						<i className="bi bi-pencil-square cg"></i>
+					</NavLink>
+				  
 					<i className="bi bi-trash cr" onClick={()=>props.deleteContact(id)} ></i>
 				</div>
 			  </div>

@@ -5,7 +5,9 @@ import './App.css';
 import Header from './component/header/Header.js';
 import Contact from './component/contact/Contact.js';
 import AddContact from './component/contact/AddContact.js';
-
+import PeopleDetails from './component/contact/PeopleDetails.js';
+import EditContact from './component/contact/EditContact.js';
+import api from './api/contact';
 
 //import {bootstrap} from 'react-bootstrap';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
@@ -19,15 +21,54 @@ function App() {
 	const [contactList, setContact] = useState([]);
 	const LOCAL_STORAGE_KEY ="contactList";
 	
-	const addContactHendel=(contact)=>{
-		console.log(contact);
-		setContact([...contactList, {id: uuid(), ...contact}]);
+	
+	const getContact= async()=>{
+		const response = await api.get("/contact");
+		return response.data;
+	};
+	
+	
+	const addContactHendel= async (contact)=>{
+/* 		console.log(contact);
+		setContact([...contactList, {id: uuid(), ...contact}]); */
+		
+		const request={
+			id:uuid(),
+			...contact
+		};
+		
+		const response =await api.post('/contact', request);
+		setContact([...contactList, response.data]);
+		console.log(response);
+	};
+	
+	
+	
+	//		UPDATE  CONTACTS 
+	const updateContactHendel= async (contactInfo)=>{
+	
+		const response =await api.put(`/contact/${contactInfo.id}`, contactInfo);
+		const {id, name, email} = response.data;
+		
+		setContact(
+			contactList.map((contactInfo)=>{
+				return contactInfo.id===id? {...response.data} : contactInfo;
+			})
+		);
+		console.log(response);
 	};
 	
 	
 	useEffect(()=>{
-		const getdata = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-		if(getdata) setContact(getdata);
+		/* const getdata = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+		if(getdata) setContact(getdata); */
+		
+		const getAllContact = async()=>{
+			const allContact = await getContact();
+			if(allContact) setContact(allContact);
+		};
+		
+		getAllContact();
 		
 	},[]);
 	
@@ -38,7 +79,9 @@ function App() {
 	},[contactList]);
 	
 
-	const deleteContact=(id)=>{
+	const deleteContact= async(id)=>{
+		
+		await api.delete(`/contact/${id}`);
 		
 		const removelId = contactList.filter((contact)=>{
 			return contact.id !== id;
@@ -64,6 +107,12 @@ function App() {
 				path="/add"
 				render={(props)=> <AddContact {...props} addContactHendel={addContactHendel} />} 		
 				/>		{/* passing props in route */}
+				
+				<Route path="/contact/:id" component={PeopleDetails} />
+				
+				<Route path="/edit/:id"
+				render={(props)=><EditContact {...props} updateContactHendel={updateContactHendel} />}
+				/>
 				
 			</Switch>
 		</Router>
