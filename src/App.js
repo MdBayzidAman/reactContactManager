@@ -19,6 +19,7 @@ import {BrowserRouter as Router, Switch, Route} from 'react-router-dom';
 function App() {
 	
 	const [contactList, setContact] = useState([]);
+	
 	const LOCAL_STORAGE_KEY ="contactList";
 	
 	
@@ -91,6 +92,28 @@ function App() {
 	};
 	
 	
+	
+	
+	
+	// 		SEARCH
+	const [search, setSearch] = useState("");
+	const [searchResult, setSearchResult] = useState([]);
+
+	
+	const searchHendel=(search)=>{
+		setSearch(search);
+		if(search !== ""){
+			const newCotactList = contactList.filter((contact)=>{
+				return Object.values(contact).join(" ").toLowerCase().includes(search.toLowerCase());
+			});
+			
+			setSearchResult(newCotactList);
+		}else{
+			setSearchResult(contactList);
+		}
+	};
+	
+	
   return (
     <>
 		<Header/>
@@ -100,7 +123,15 @@ function App() {
 				<Route
 				exact
 				path="/"
-				render={(props)=> <Contact {...props} contact={contactList} getContactId={deleteContact}/>}
+				render={(props)=>(
+					<Contact
+					{...props}
+					contact={search.length < 1 ? contactList : searchResult}
+					getContactId={deleteContact}
+					term={search}
+					searchHendel={searchHendel}
+					/>
+				)}
 				/>		{/* passing props in route */}
 				
 				<Route

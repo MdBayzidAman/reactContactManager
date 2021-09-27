@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
 //import userImg from '../../image/user.jpg';
 import PeopleCard from './PeopleCard';
@@ -25,7 +25,13 @@ function Contact(Props) {
 		);
 	});
 	
-
+	
+	
+	// search
+	const searchInput = useRef("");
+	const getSearch=()=>{
+		Props.searchHendel(searchInput.current.value)
+	};
 	
 	return (
 		<>
@@ -34,12 +40,23 @@ function Contact(Props) {
 				<div className="col-10 mx-auto">
 					<div className="row align-items-center">
 						<h3 className="col-md-10 py-3 mt-4">Contact List</h3>
-						<div className="col-md-2">
+						<div className="col-md-2 ">
 						  <NavLink to="/add" >
 							<button className="btn btn-primary" >Add contact</button>
 						  </NavLink>
 						</div>
+						<div className="col-md-12 mb-5">
 						
+							<input
+							ref={searchInput}
+							type="search"
+							name="search"
+							placeholder="Search Contact . . . ."
+							className="search form-control"
+							value={Props.term}
+							onChange={getSearch}
+							/>
+						</div>
 						{contactList}
 						
 					</div>
