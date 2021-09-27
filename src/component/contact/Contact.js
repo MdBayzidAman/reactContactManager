@@ -16,9 +16,9 @@ function Contact(Props) {
 	
 	
 	
-	const contact=[
+	//const contact=[
 		//{id:'1', name:'Bayzid aman', email:'bayzidaman@gmail.com',},
-	];
+	//];
 	const contactList=Props.contact.map((data, index)=>{
 		return (
 			<PeopleCard key={data.key} data={data} name={data.name} email={data.email} deleteContact={deleteContact}/>
@@ -57,7 +57,8 @@ function Contact(Props) {
 							onChange={getSearch}
 							/>
 						</div>
-						{contactList}
+						
+						{contactList.length > 0 ? contactList : <h5 className="c-gry text-center" >No Contacts Available !</h5>}
 						
 					</div>
 				</div>
